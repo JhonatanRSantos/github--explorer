@@ -15,7 +15,7 @@ yarn start
 
 # Pages
 
-<img alt="Github Explorer" src="./imgs/home.png" />
+<img alt="Github Explorer" src="./imgs/home_en.png" />
 
 <strong>To find a repository type the username/repo_name</strong>
 
