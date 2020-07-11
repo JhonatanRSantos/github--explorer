@@ -6,7 +6,7 @@ import { Header, Title, Form, Repositories, Error } from './styles';
 import logoImage from '../../assets/github_explorer.svg';
 import githubApi from '../../services/githubApi';
 import { Language } from '../../lang/lang';
-import * as english from '../../lang/en';
+import * as pt from '../../lang/pt';
 
 interface Repository {
   full_name: string;
@@ -19,8 +19,8 @@ interface Repository {
 }
 
 const Dashboard: React.FC = () => {
-  const [language, setLanguage] = useState('en');
-  const [translation, setTranslation] = useState<Language>(english);
+  const [language, setLanguage] = useState('pt');
+  const [translation, setTranslation] = useState<Language>(pt);
   const [requestError, setRequestError] = useState('');
   const [repositoryName, setRepositoryName] = useState('');
   const [repositories, setRepositories] = useState<Repository[]>(() => {
@@ -30,10 +30,14 @@ const Dashboard: React.FC = () => {
     }
     return [];
   });
+  // Set default language
+  localStorage.setItem('@githubExplorer:language', 'pt');
 
   useEffect(() => {
     import(`../../lang/${language}`).then((lang: Language) => {
       setTranslation(lang);
+      // Set new language
+      localStorage.setItem('@githubExplorer:language', language);
     });
   }, [language]);
 
@@ -86,12 +90,9 @@ const Dashboard: React.FC = () => {
         <select
           id="selectLanguage"
           name="selectLanguage"
-          defaultValue="DEFAULT"
+          defaultValue="pt"
           onChange={handleLanguageSelection}
         >
-          <option value="DEFAULT" disabled>
-            Select a language
-          </option>
           <option value="pt">Português</option>
           <option value="en">Enslish</option>
         </select>

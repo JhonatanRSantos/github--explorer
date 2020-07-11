@@ -5,6 +5,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { Header, RepositoryInfo, Issues } from './styles';
 import logoImage from '../../assets/github_explorer.svg';
 import githubApi from '../../services/githubApi';
+import { Language } from '../../lang/lang';
 
 interface Repository {
   full_name: string;
@@ -33,10 +34,18 @@ interface RepositoryParams {
 }
 
 const Repository: React.FC = () => {
+  const [translation, setTranslation] = useState<Language | null>(null);
   const [repository, setRepository] = useState<Repository | null>(null);
   const [issues, setIssues] = useState<Issue[]>([]);
 
   const { params } = useRouteMatch<RepositoryParams>();
+  useEffect(() => {
+    // Set new language
+    const language = localStorage.getItem('@githubExplorer:language');
+    import(`../../lang/${language}`).then((lang: Language) => {
+      setTranslation(lang);
+    });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -55,7 +64,7 @@ const Repository: React.FC = () => {
         <img src={logoImage} alt="Github Explorer" />
         <Link to="/">
           <FiChevronLeft size={16} />
-          Voltar
+          {translation?.backButton || 'voltar'}
         </Link>
       </Header>
       {repository && (
